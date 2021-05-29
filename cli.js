@@ -21,16 +21,12 @@ const source = `
 @tailwind utilities;
 `;
 
-function checkArg(arg) {
-	return arg && arg === path.basename(arg);
-}
-
-postcss([checkArg(argv.i) ? tailwind(argv.i) : tailwind])
+postcss([!!(argv.i) ? tailwind(argv.i) : tailwind])
 	.process(source, {from: undefined})
 	.then(({css}) => {
 		const styles = build(css);
 		fs.writeFileSync(
-			checkArg(argv.o) ? argv.o : 'styles.json',
+			!!(argv.o) ? argv.o : 'styles.json',
 			JSON.stringify(styles, null, '\t')
 		);
 	})
