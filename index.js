@@ -103,13 +103,21 @@ const create = tailwindStyles => {
 };
 
 const getConfigFilePath = name => {
+	const dir = _ => {
+		try {
+			return process.cwd();
+		} catch (_) {
+			return __dirname;
+		}
+	};
+
 	let options = {config: 'tailwind.config.js', styles: 'styles.json'};
 	try {
-		const configPath = require(`${process.cwd()}/postcss.config.js`);
+		const configPath = require(`${dir()}/postcss.config.js`);
 		options = Object.assign(options, configPath.plugins.tailwindcss);
 	} catch (_) {}
 
-	return `${process.cwd()}/${options[name]}`;
+	return `${dir()}/${options[name]}`;
 };
 
 const {tailwind, getColor} = create(require(getConfigFilePath('styles')));
