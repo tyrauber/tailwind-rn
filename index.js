@@ -1,5 +1,6 @@
 'use strict';
 const matchAll = require('match-all');
+const config = require('config');
 
 // Tailwind started using CSS variables for color opacity since v1.4.0,
 // this helper adds a primitive support for these
@@ -102,25 +103,9 @@ const create = tailwindStyles => {
 	return {tailwind, getColor};
 };
 
-const getConfigFilePath = name => {
-	const dir = _ => {
-		try {
-			return process.cwd();
-		} catch (_) {
-			return __dirname;
-		}
-	};
+console.log(config);
 
-	let options = {config: 'tailwind.config.js', styles: 'styles.json'};
-	try {
-		const configPath = require(`${dir()}/postcss.config.js`);
-		options = Object.assign(options, configPath.plugins.tailwindcss);
-	} catch (_) {}
-
-	return `${dir()}/${options[name]}`;
-};
-
-const {tailwind, getColor} = create(require(getConfigFilePath('styles')));
+const {tailwind, getColor} = create(require(config.getFilePath('styles')));
 
 module.exports = tailwind;
 module.exports.default = tailwind;
