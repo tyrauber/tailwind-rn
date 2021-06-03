@@ -1,24 +1,19 @@
 const tailwind = require('tailwindcss');
+const path = require('path');
 
 const config = {
-	dir: _ => {
-		try {
-			return process.cwd();
-		} catch (_) {
-			return __dirname;
-		}
-	},
 	paths: (options = {config: 'tailwind.config.js', styles: 'styles.json'}) => {
 		try {
-			const configPath = require(`${config.dir()}/postcss.config.js`);
+			const configPath = config.getFilePath(`./postcss.config.js`);
 			options = Object.assign(options, configPath.plugins.tailwindcss);
 		} catch (_) {}
 
 		return options;
 	},
 	getFilePath: name => {
-		console.log('getFilePath', config);
-		return `${config.dir()}/${config.paths()[name]}`;
+    const filePath = path.join(__dirname,config.paths()[name]);
+    console.log('getFilePath', filePath);
+    return filePath;
 	},
 	getTailwind: () => {
 		try {
