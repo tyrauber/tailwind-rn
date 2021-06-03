@@ -5,6 +5,7 @@ const meow = require('meow');
 const postcss = require('postcss');
 const tailwind = require('tailwindcss');
 const build = require('./build');
+const {getConfigFilePath} = require('.');
 
 meow(`
 	Usage
@@ -16,11 +17,11 @@ const source = `
 @tailwind utilities;
 `;
 
-postcss([tailwind])
+postcss([tailwind(getConfigFilePath('config'))])
 	.process(source, {from: undefined})
 	.then(({css}) => {
 		const styles = build(css);
-		fs.writeFileSync('styles.json', JSON.stringify(styles, null, '\t'));
+		fs.writeFileSync(getConfigFilePath('styles'), JSON.stringify(styles, null, '\t'));
 	})
 	.catch(error => {
 		console.error('> Error occurred while generating styles');
