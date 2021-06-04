@@ -16,14 +16,22 @@ const source = `
 @tailwind utilities;
 `;
 
-postcss([tailwind])
-	.process(source, {from: undefined})
-	.then(({css}) => {
-		const styles = build(css);
-		fs.writeFileSync('styles.json', JSON.stringify(styles, null, '\t'));
-	})
-	.catch(error => {
-		console.error('> Error occurred while generating styles');
-		console.error(error.stack);
-		process.exit(1);
-	});
+const generate = _ => {
+  postcss([tailwind])
+  	.process(source, {from: undefined})
+  	.then(({css}) => {
+  		const styles = build(css);
+  		fs.writeFileSync('styles.json', JSON.stringify(styles, null, '\t'));
+  	})
+  	.catch(error => {
+  		console.error('> Error occurred while generating styles');
+  		console.error(error.stack);
+  		process.exit(1);
+  	});
+}
+
+module.exports = generate;
+
+if (process.argv) {
+  generate();
+}
