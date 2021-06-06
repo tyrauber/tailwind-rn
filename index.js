@@ -102,7 +102,12 @@ const create = tailwindStyles => {
 	return {tailwind, getColor};
 };
 
-const {tailwind, getColor} = create(require('./styles.json'));
+let styles = '';
+try {
+	styles = require('./styles.json');
+} catch (_) { }
+
+const {tailwind, getColor} = create(styles);
 
 module.exports = tailwind;
 module.exports.default = tailwind;
